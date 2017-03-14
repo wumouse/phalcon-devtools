@@ -58,6 +58,7 @@ class AllModels extends Command
             'directory=s' => 'Base path on which project will be created [optional]',
             'mapcolumn'   => 'Get some code for map columns [optional]',
             'abstract'    => 'Abstract Model [optional]',
+            'annotate'    => 'Annotate Attributes [optional]',
             'help'        => 'Shows this help [optional]',
         ];
     }
@@ -126,6 +127,7 @@ class AllModels extends Command
             'genDocMethods' => $this->isReceivedOption('doc'),
             'modelsDir' => $modelsDir,
             'mapColumn' => $this->isReceivedOption('mapcolumn'),
+            'annotate' => $this->isReceivedOption('annotate'),
             'abstract' => $this->isReceivedOption('abstract')
         ]);
 

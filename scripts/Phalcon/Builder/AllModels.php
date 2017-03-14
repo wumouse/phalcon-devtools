@@ -203,6 +203,7 @@ class AllModels extends Component
                     'directory' => $this->options->get('directory'),
                     'modelsDir' => $this->options->get('modelsDir'),
                     'mapColumn' => $mapColumn,
+                    'annotate' => $this->options->get('annotate'),
                     'abstract' => $this->options->get('abstract')
                 ]);
 

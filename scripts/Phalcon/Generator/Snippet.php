@@ -158,7 +158,14 @@ EOD;
         return $templateValidationFailed;
     }
 
-    public function getAttributes($type, $visibility, \Phalcon\Db\ColumnInterface $field, $annotate = false, $customFieldName = null)
+    public function getAttributes(
+        $type,
+        $visibility,
+        \Phalcon\Db\ColumnInterface $field,
+        $annotate = false,
+        $customFieldName = null,
+        $label = ''
+    )
     {
         $fieldName = $customFieldName ?: $field->getName();
 
@@ -166,6 +173,7 @@ EOD;
             $templateAttributes = <<<EOD
     /**
      *
+     * @label('%s')
      * @var %s%s%s
      * @Column(type="%s"%s, nullable=%s)
      */
@@ -173,6 +181,7 @@ EOD;
 EOD;
 
             return PHP_EOL.sprintf($templateAttributes,
+                $label,
                 $type,
                 $field->isPrimary() ? PHP_EOL.'     * @Primary' : '',
                 $field->isAutoIncrement() ? PHP_EOL.'     * @Identity' : '',

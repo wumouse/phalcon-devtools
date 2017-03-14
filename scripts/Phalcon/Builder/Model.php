@@ -421,13 +421,29 @@ class Model extends Component
         $attributes = [];
         $setters = [];
         $getters = [];
+        // get the comment for columns
+        $comments = [];
+        $sql = 'SELECT COLUMN_NAME, COLUMN_COMMENT FROM information_schema.COLUMNS WHERE TABLE_NAME = :table_name';
+        $result = $db->query($sql, ['table_name' => $table]);
+        $result->setFetchMode(\Phalcon\Db::FETCH_NUM);
+        foreach ($result->getInternalResult() as $row) {
+            $columnName = $row[0];
+            $comments[$columnName] = $row[1];
+        }
         foreach ($fields as $field) {
             if (array_key_exists(strtolower($field->getName()), $exclude)) {
                 continue;
             }
             $type = $this->getPHPType($field->getType());
             $fieldName = $this->options->get('camelize') ? Utils::lowerCamelize($field->getName()) : $field->getName();
-            $attributes[] = $this->snippet->getAttributes($type, $useSettersGetters ? 'protected' : 'public', $field, $this->options->has( 'annotate' ), $fieldName);
+            $attributes[] = $this->snippet->getAttributes(
+                $type,
+                $useSettersGetters ? 'protected' : 'public',
+                $field,
+                $this->options->has('annotate'),
+                $fieldName,
+                $comments[$field->getName()]
+            );
             if ($useSettersGetters) {
                 $methodName   = Utils::camelize($field->getName());
 
